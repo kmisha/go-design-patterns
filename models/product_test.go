@@ -28,6 +28,15 @@ func TestNewProduct(t *testing.T) {
 			t.Fatalf("we want amount of product = 1 but got %d", p.Amount)
 		}
 	})
+
+	t.Run("ID for different products should be uniq", func(t *testing.T) {
+		p1, _ := NewProduct("Bike")
+		p2, _ := NewProduct("Car")
+
+		if p1.ID == p2.ID {
+			t.Fatalf("we want that p1 ID {%s} != p2 ID {%s}", p1.ID, p2.ID)
+		}
+	})
 }
 
 func TestUpdateName(t *testing.T) {
