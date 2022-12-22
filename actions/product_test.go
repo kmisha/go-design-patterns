@@ -3,7 +3,6 @@ package actions
 import (
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/kmisha/fan-in-pattern-go/models"
 )
@@ -11,33 +10,20 @@ import (
 // create
 func TestCreateProduct(t *testing.T) {
 	t.Run("we got a message when we creating a new product", func(t *testing.T) {
-		productCh := make(chan string)
+		action := CreateProductAction{name: "Bike"}
 
-		go CreateAction(productCh, "Bike")
-		var got string
-		select {
-		case m := <-productCh:
-			got = m
-		case <-time.After(10 * time.Millisecond):
-			got = ""
+		got := action.Do()
+
+		if !strings.HasPrefix(got, "success") {
+			t.Fatalf("want positive result, but got %s", got)
 		}
 
-		if got == "" {
-			t.Fatalf("didn't get a message when create a product %v", got)
-		}
 	})
 
 	t.Run("we got an error message when we creating a new product with empty name", func(t *testing.T) {
-		productCh := make(chan string)
+		action := CreateProductAction{name: ""}
 
-		go CreateAction(productCh, "")
-		var got string
-		select {
-		case m := <-productCh:
-			got = m
-		case <-time.After(10 * time.Millisecond):
-			got = ""
-		}
+		got := action.Do()
 
 		if !strings.HasPrefix(got, "error") {
 			t.Fatalf("didn't get a message when create a product %v", got)
@@ -48,37 +34,21 @@ func TestCreateProduct(t *testing.T) {
 // update
 func TestUpdateProduct(t *testing.T) {
 	t.Run("we got a message when we creating a new product", func(t *testing.T) {
-		productCh := make(chan string)
-
 		p, _ := models.NewProduct("Bike")
+		action := UpdateProductAction{NewName: "Super Bike", Product: p}
 
-		go UpdateAction(productCh, "Super bike", p)
-		var got string
-		select {
-		case m := <-productCh:
-			got = m
-		case <-time.After(10 * time.Millisecond):
-			got = ""
-		}
+		got := action.Do()
 
-		if got == "" {
-			t.Fatalf("didn't get a message when create a product %v", got)
+		if !strings.HasPrefix(got, "success") {
+			t.Fatalf("want positive result, but got %s", got)
 		}
 	})
 
 	t.Run("we got an error message when we creating a new product with empty name", func(t *testing.T) {
-		productCh := make(chan string)
-
 		p, _ := models.NewProduct("Bike")
+		action := UpdateProductAction{NewName: "", Product: p}
 
-		go UpdateAction(productCh, "", p)
-		var got string
-		select {
-		case m := <-productCh:
-			got = m
-		case <-time.After(10 * time.Millisecond):
-			got = ""
-		}
+		got := action.Do()
 
 		if !strings.HasPrefix(got, "error") {
 			t.Fatalf("didn't get a message when create a product %v", got)

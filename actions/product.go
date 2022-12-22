@@ -7,39 +7,47 @@ import (
 	"github.com/kmisha/fan-in-pattern-go/models"
 )
 
-type Msg[T interface{}] struct {
-	msg string
-	o   T
+const (
+	CREATE_PRODUCT = "Create product"
+	UPDATE_PRODUCT = "Update product"
+	READ_PRODUCT   = "Read product"
+	DELETE_PRODUCT = "Read product"
+)
+
+// Create a product with name
+type CreateProductAction struct {
+	name string
 }
 
-// create
-func CreateAction(ch chan<- string, name string) {
+func (a *CreateProductAction) Do() string {
 	var msg bytes.Buffer
-	defer func() {
-		ch <- msg.String()
-	}()
-
-	p, err := models.NewProduct(name)
+	p, err := models.NewProduct(a.name)
 
 	if err != nil {
-		fmt.Fprintf(&msg, "error: can't create product with name = %s", name)
+		fmt.Fprintf(&msg, "error: can't create product with name = %s", a.name)
 	} else {
-		fmt.Fprintf(&msg, "create product with name = %s and id = %s", name, p.ID.String())
+		fmt.Fprintf(&msg, "success: create product with name = %s and id = %s", a.name, p.ID.String())
 	}
+
+	return msg.String()
 }
 
-// update
-func UpdateAction(ch chan<- string, name string, p *models.Product) {
-	var msg bytes.Buffer
-	defer func() {
-		ch <- msg.String()
-	}()
+// Update product name to
+type UpdateProductAction struct {
+	NewName string
+	Product *models.Product
+}
 
-	err := p.UpdateName(name)
+func (a *UpdateProductAction) Do() string {
+	var msg bytes.Buffer
+
+	err := a.Product.UpdateName(a.NewName)
 
 	if err != nil {
-		fmt.Fprintf(&msg, "error: can't update product's name %s", name)
+		fmt.Fprintf(&msg, "error: can't update product's name %s", a.NewName)
 	} else {
-		fmt.Fprintf(&msg, "update product's name = %s and id = %s", name, p.ID.String())
+		fmt.Fprintf(&msg, "success: update product's name = %s and id = %s", a.NewName, a.Product.ID.String())
 	}
+
+	return msg.String()
 }
