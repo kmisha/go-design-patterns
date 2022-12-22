@@ -5,14 +5,14 @@ import (
 	"sync"
 )
 
-func MergeData(ctx context.Context, channels ...<-chan string) <-chan string {
-	outCh := make(chan string)
+func MergeData[T interface{}](ctx context.Context, channels ...<-chan T) <-chan T {
+	outCh := make(chan T)
 
 	var wg sync.WaitGroup
 	wg.Add(len(channels))
 
 	for _, c := range channels {
-		go func(ch <-chan string) {
+		go func(ch <-chan T) {
 			defer wg.Done()
 
 			for m := range ch {

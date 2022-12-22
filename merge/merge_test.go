@@ -40,4 +40,22 @@ func TestMergeData(t *testing.T) {
 		}
 
 	})
+
+	t.Run("we should get no more message from result channel than sent", func(t *testing.T) {
+		ch1 := generate("first", 5)
+		ch2 := generate("second", 10)
+		got := 0
+		want := 15
+
+		for m := range MergeData(context.TODO(), ch1, ch2) {
+			if len(m) > 1 {
+				got += 1
+			}
+		}
+
+		if got != want {
+			t.Fatalf("wont %d messages but got %d", want, got)
+		}
+
+	})
 }
