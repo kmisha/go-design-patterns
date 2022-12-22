@@ -1,4 +1,4 @@
-package product
+package service
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func TestProductService(t *testing.T) {
 		service.Do(&action)
 	}()
 
-	got := <-service.updates
+	got := <-service.Updates
 
 	if got != MOCK_MESSAGE {
 		t.Fatalf("want message = %s; got %s", MOCK_MESSAGE, got)

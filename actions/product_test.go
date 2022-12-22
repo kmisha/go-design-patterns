@@ -10,7 +10,7 @@ import (
 // create
 func TestCreateProduct(t *testing.T) {
 	t.Run("we got a message when we creating a new product", func(t *testing.T) {
-		action := CreateProductAction{name: "Bike"}
+		action := CreateProductAction{Name: "Bike"}
 
 		got := action.Do()
 
@@ -21,7 +21,7 @@ func TestCreateProduct(t *testing.T) {
 	})
 
 	t.Run("we got an error message when we creating a new product with empty name", func(t *testing.T) {
-		action := CreateProductAction{name: ""}
+		action := CreateProductAction{Name: ""}
 
 		got := action.Do()
 

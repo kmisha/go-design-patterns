@@ -1,11 +1,11 @@
-package product
+package service
 
 import (
 	"context"
 )
 
 type EntityService struct {
-	updates chan string
+	Updates chan string
 }
 
 type Action interface {
@@ -17,5 +17,5 @@ func NewEntityService(ctx context.Context) *EntityService {
 }
 
 func (s *EntityService) Do(act Action) {
-	s.updates <- act.Do()
+	s.Updates <- act.Do()
 }

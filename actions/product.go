@@ -16,17 +16,17 @@ const (
 
 // Create a product with name
 type CreateProductAction struct {
-	name string
+	Name string
 }
 
 func (a *CreateProductAction) Do() string {
 	var msg bytes.Buffer
-	p, err := models.NewProduct(a.name)
+	p, err := models.NewProduct(a.Name)
 
 	if err != nil {
-		fmt.Fprintf(&msg, "error: can't create product with name = %s", a.name)
+		fmt.Fprintf(&msg, "error: can't create product with name = %s", a.Name)
 	} else {
-		fmt.Fprintf(&msg, "success: create product with name = %s and id = %s", a.name, p.ID.String())
+		fmt.Fprintf(&msg, "success: create product with name = %s and id = %s", a.Name, p.ID.String())
 	}
 
 	return msg.String()
