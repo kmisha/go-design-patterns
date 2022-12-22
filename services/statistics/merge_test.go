@@ -1,4 +1,4 @@
-package merge
+package statistics
 
 import (
 	"context"
