@@ -15,8 +15,13 @@ func MergeData[T interface{}](ctx context.Context, channels ...<-chan T) <-chan 
 		go func(ch <-chan T) {
 			defer wg.Done()
 
-			for m := range ch {
-				outCh <- m
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case msg := <-ch:
+					outCh <- msg
+				}
 			}
 		}(c)
 	}
