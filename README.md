@@ -27,3 +27,7 @@ An example of Fan-in pattern implementation
 - the system manages a product, a user, an order, and a cart (entities). We can create, update, and delete these entities.
 - the system sends all changes to channels
 - the system tracks the number of changes
+
+## How to run
+
+`go run cmd/main.go
