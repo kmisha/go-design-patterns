@@ -8,13 +8,13 @@ import (
 )
 
 type CreateCartAction struct {
-	owner   *models.User
-	product *models.Product
+	Owner   *models.User
+	Product *models.Product
 }
 
 func (a *CreateCartAction) Do() string {
 	var msg bytes.Buffer
-	o := models.NewCart(a.owner, a.product)
+	o := models.NewCart(a.Owner, a.Product)
 
 	fmt.Fprintf(&msg, "success: create an cart with id = %s", o.ID.String())
 

@@ -8,12 +8,12 @@ import (
 )
 
 type CreateOrderAction struct {
-	owner *models.User
+	Owner *models.User
 }
 
 func (a *CreateOrderAction) Do() string {
 	var msg bytes.Buffer
-	o := models.NewOrder(a.owner)
+	o := models.NewOrder(a.Owner)
 
 	fmt.Fprintf(&msg, "success: create an order with id = %s", o.ID.String())
 
