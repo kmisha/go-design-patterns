@@ -9,6 +9,6 @@ type User struct {
 	Fullname string
 }
 
-func NewUser(name, surename string) User {
-	return User{uuid.New(), name, surename, name + " " + surename}
+func NewUser(name, surename string) *User {
+	return &User{uuid.New(), name, surename, name + " " + surename}
 }
